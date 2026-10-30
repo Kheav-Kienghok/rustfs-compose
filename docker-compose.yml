@@ -4,14 +4,24 @@ services:
     container_name: rustfs
     restart: unless-stopped
     env_file: .env
+
     environment:
       RUSTFS_VOLUMES: /data
       RUSTFS_ADDRESS: 0.0.0.0:9000
       RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
       RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_REGION: ap-southeast-1
+
     ports:
       - "9000:9000"
       - "9001:9001"
+
     volumes:
-      - ./data:/data
-      - ./logs:/logs
+      - /mnt/data/rustfs/data:/data
+      - /mnt/data/rustfs/logs:/logs
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
